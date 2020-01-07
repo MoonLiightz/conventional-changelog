@@ -8,32 +8,32 @@ const concat = require('concat-stream');
 const prependFile = require('prepend-file');
 
 class ConventionalChangelog extends Plugin {
-  static disablePlugin() {
-    return 'version';
-  }
+  // static disablePlugin() {
+  //   return 'version';
+  // }
 
-  getIncrementedVersion({ increment, latestVersion, isPreRelease, preReleaseId }) {
-    this.debug({ increment, latestVersion, isPreRelease, preReleaseId });
-    return new Promise((resolve, reject) =>
-      conventionalRecommendedBump(this.options, (err, result) => {
-        this.debug({ err, result });
-        if (err) return reject(err);
-        let { releaseType } = result;
-        if(increment) {
-          this.log.warn(`Recommended bump is "${releaseType}", but is overridden with "${increment}".`)
-          releaseType = increment;
-        }
-        if(increment && semver.valid(increment)) {
-          resolve(increment);
-        } else if (releaseType) {
-          const type = isPreRelease ? `pre${releaseType}` : releaseType;
-          resolve(semver.inc(latestVersion, type, preReleaseId));
-        } else {
-          resolve(null);
-        }
-      })
-    );
-  }
+  // getIncrementedVersion({ increment, latestVersion, isPreRelease, preReleaseId }) {
+  //   this.debug({ increment, latestVersion, isPreRelease, preReleaseId });
+  //   return new Promise((resolve, reject) =>
+  //     conventionalRecommendedBump(this.options, (err, result) => {
+  //       this.debug({ err, result });
+  //       if (err) return reject(err);
+  //       let { releaseType } = result;
+  //       if(increment) {
+  //         this.log.warn(`Recommended bump is "${releaseType}", but is overridden with "${increment}".`)
+  //         releaseType = increment;
+  //       }
+  //       if(increment && semver.valid(increment)) {
+  //         resolve(increment);
+  //       } else if (releaseType) {
+  //         const type = isPreRelease ? `pre${releaseType}` : releaseType;
+  //         resolve(semver.inc(latestVersion, type, preReleaseId));
+  //       } else {
+  //         resolve(null);
+  //       }
+  //     })
+  //   );
+  // }
 
   getChangelogStream(options = {}) {
     return conventionalChangelog(Object.assign(options, this.options), null, {
